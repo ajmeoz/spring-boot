@@ -11,15 +11,15 @@ import org.springframework.util.ErrorHandler;
 /**
  * @author antlma
  *
- * Spring application configuration
- * Inspired by https://stackoverflow.com/questions/41041536/universal-exception-handler-for-scheduled-tasks-in-spring-boot-with-java-conf
+ * Konfigurace plánovače úloh
+ * Zdroj k ošetřování výjimek při provádění úloh ve Springu: https://stackoverflow.com/questions/41041536/universal-exception-handler-for-scheduled-tasks-in-spring-boot-with-java-conf
  *
  */
 @Configuration
 public class TaskSchedulerConfig implements TaskSchedulerCustomizer {
 
 	/**
-	 * Exception handling customization of a TaskScheduler instance
+	 * Přizpůsobení ošetřování výjimek instance třídy TaskScheduler
 	 */
 	@Override
 	public void customize(ThreadPoolTaskScheduler taskScheduler) {
@@ -31,7 +31,7 @@ public class TaskSchedulerConfig implements TaskSchedulerCustomizer {
 		private static final Logger logger = LoggerFactory.getLogger(TaskSchedulerExceptionHandler.class);
 
 		/**
-		 * Handles the error occurred during execution of a task
+		 * Ošetřuje chybu, ke které došlo v průběhu provádění úlohy
 		 */
 		@Override
 		public void handleError(Throwable t) {
