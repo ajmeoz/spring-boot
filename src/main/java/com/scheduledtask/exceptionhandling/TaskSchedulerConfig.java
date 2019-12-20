@@ -29,8 +29,8 @@ public class TaskSchedulerConfig implements TaskSchedulerCustomizer {
 	private static class TaskSchedulerExceptionHandler implements ErrorHandler {
 
 		private static final Logger logger = LoggerFactory.getLogger(TaskSchedulerExceptionHandler.class);
-		private static final String FRAME_START_STRING = "at com.scheduledtask";
-		private static final String TASK_NAME_REGEXP = "[A-Z_$][a-zA-Z0-9_$]*Task";
+		private static final String FRAME_START_STRING = "at com.scheduledtask";    // začátek řádku, ze kterého se vezme název úlohy
+		private static final String TASK_NAME_REGEXP = "[A-Z_$][a-zA-Z0-9_$]*Task"; // regulární výraz pro název úlohy
 
 		/**
 		 * Ošetřuje chybu, ke které došlo v průběhu provádění úlohy
@@ -50,9 +50,9 @@ public class TaskSchedulerConfig implements TaskSchedulerCustomizer {
 						}
 					}
 					if (taskName != null) {
-						logger.error("An error occurred in " + taskName + ", " + ExceptionUtils.getMessage(t));
+						logger.error("Došlo k chybě v " + taskName + ", " + ExceptionUtils.getMessage(t));
 					} else {
-						logger.error("Couldn't get task name. The following error occurred: " + ExceptionUtils.getMessage(t));
+						logger.error("Nepodařilo se zjistit název úlohy. Během provádění úlohy nastala následující chyba: " + ExceptionUtils.getMessage(t));
 					}
 				}
 			}
