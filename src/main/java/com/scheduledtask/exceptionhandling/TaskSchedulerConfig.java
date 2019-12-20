@@ -49,7 +49,11 @@ public class TaskSchedulerConfig implements TaskSchedulerCustomizer {
 							break;
 						}
 					}
-					logger.error("An error occurred in " + taskName + ", " + ExceptionUtils.getMessage(t));
+					if (taskName != null) {
+						logger.error("An error occurred in " + taskName + ", " + ExceptionUtils.getMessage(t));
+					} else {
+						logger.error("Couldn't get task name. The following error occurred: " + ExceptionUtils.getMessage(t));
+					}
 				}
 			}
 		}
