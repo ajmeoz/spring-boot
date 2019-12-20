@@ -29,6 +29,8 @@ public class TaskSchedulerConfig implements TaskSchedulerCustomizer {
 	private static class TaskSchedulerExceptionHandler implements ErrorHandler {
 
 		private static final Logger logger = LoggerFactory.getLogger(TaskSchedulerExceptionHandler.class);
+		private static final String FRAME_START_STRING = "at com.scheduledtask";
+		private static final String TASK_NAME_REGEXP = "[A-Z_$][a-zA-Z0-9_$]*Task";
 
 		/**
 		 * Ošetřuje chybu, ke které došlo v průběhu provádění úlohy
@@ -38,11 +40,11 @@ public class TaskSchedulerConfig implements TaskSchedulerCustomizer {
 
 			String[] frames = ExceptionUtils.getStackFrames(t);
 			for (String frame : frames) {
-				if (frame.trim().startsWith("at com.scheduledtask")) {
+				if (frame.trim().startsWith(FRAME_START_STRING)) {
 					String[] parts = frame.split("\\.");
 					String taskName = null;
 					for (String part : parts) {
-						if (part.matches("[A-Z][a-z]*Task")) {
+						if (part.matches(TASK_NAME_REGEXP)) {
 							taskName = part;
 							break;
 						}
