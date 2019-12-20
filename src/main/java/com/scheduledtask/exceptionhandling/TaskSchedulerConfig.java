@@ -56,6 +56,9 @@ public class TaskSchedulerConfig implements TaskSchedulerCustomizer {
 					}
 				}
 			}
+			if (t instanceof Error) {
+				throw new Error(t);
+			}
 		}
 	}
 }
