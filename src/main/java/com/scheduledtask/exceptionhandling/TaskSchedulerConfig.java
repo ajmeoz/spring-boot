@@ -35,9 +35,21 @@ public class TaskSchedulerConfig implements TaskSchedulerCustomizer {
 		 */
 		@Override
 		public void handleError(Throwable t) {
-			logger.error(ExceptionUtils.getMessage(t) + ", " + ExceptionUtils.getRootCauseMessage(t));
+
+			String[] frames = ExceptionUtils.getStackFrames(t);
+			for (String frame : frames) {
+				if (frame.trim().startsWith("at com.scheduledtask")) {
+					String[] parts = frame.split("\\.");
+					String taskName = null;
+					for (String part : parts) {
+						if (part.matches("[A-Z][a-z]*Task")) {
+							taskName = part;
+							break;
+						}
+					}
+					logger.error("An error occurred in " + taskName + ", " + ExceptionUtils.getMessage(t));
+				}
+			}
 		}
-
 	}
-
 }

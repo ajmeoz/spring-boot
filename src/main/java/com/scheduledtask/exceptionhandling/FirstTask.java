@@ -10,25 +10,22 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ScheduledTask2 {
+public class FirstTask {
 
-	private static final Logger logger = LoggerFactory.getLogger(ScheduledTask2.class);
+	private static final Logger logger = LoggerFactory.getLogger(FirstTask.class);
 	private static final String PATTERN1 = "yyyy-MM-dd HH:mm:ss.SSS";
 	private static final String PATTERN2 = "abc";
 	private static final Random RANDOM = new Random();
 
 	private static int n = 1;
 
-	@Scheduled(fixedRate = 2000)
+	@Scheduled(fixedDelay = 1000)
 	public void printCurrentTime() throws ScheduledTaskException {
-		try {
-			int i = RANDOM.ints(1, 3).findFirst().getAsInt();
-			String pattern = i % 2 == 0 ? PATTERN2 : PATTERN1;
-			LocalDateTime now = LocalDateTime.now();
-			logger.info(n + ": " + now.format(DateTimeFormatter.ofPattern(pattern)));
-			n++;
-		} catch (Exception e) {
-			throw new ScheduledTaskException("Caught exception in ScheduledTask2", e);
-		}
+
+		int i = RANDOM.ints(1, 3).findFirst().getAsInt();
+		String pattern = i % 2 == 0 ? PATTERN2 : PATTERN1;
+		LocalDateTime now = LocalDateTime.now();
+		logger.info(n + ": " + now.format(DateTimeFormatter.ofPattern(pattern)));
+		n++;
 	}
 }
