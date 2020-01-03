@@ -37,8 +37,9 @@ public class TaskSchedulerConfig implements TaskSchedulerCustomizer {
 		 */
 		@Override
 		public void handleError(Throwable t) {
-
 			String[] frames = ExceptionUtils.getStackFrames(t);
+			String msgBase = null;
+			String msgConcrete = null;
 			for (String frame : frames) {
 				if (frame.trim().startsWith(FRAME_START_STRING)) {
 					String[] parts = frame.split("\\.");
@@ -50,11 +51,20 @@ public class TaskSchedulerConfig implements TaskSchedulerCustomizer {
 						}
 					}
 					if (taskName != null) {
-						logger.error("Došlo k chybě v " + taskName + ", " + ExceptionUtils.getMessage(t));
+						if ("BaseTask".equals(taskName)) {
+							msgBase = "Došlo k chybě v " + taskName + ", " + ExceptionUtils.getMessage(t);
+						} else {
+							msgConcrete = "Došlo k chybě v " + taskName + ", " + ExceptionUtils.getMessage(t);
+						}
 					} else {
-						logger.error("Nepodařilo se zjistit název úlohy. Během provádění úlohy nastala následující chyba: " + ExceptionUtils.getMessage(t));
+						msgConcrete = "Nepodařilo se zjistit název úlohy. Během provádění úlohy nastala následující chyba: " + ExceptionUtils.getMessage(t);
 					}
 				}
+			}
+			if (msgConcrete != null) {
+				logger.error(msgConcrete);
+			} else if (msgBase != null) {
+				logger.error(msgBase);
 			}
 			if (t instanceof Error) {
 				throw new Error(t);
